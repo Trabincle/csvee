@@ -7,9 +7,15 @@
 
 CSVParser * csv_new(char *file, int fields_per_line) {
     int i;
+    FILE *try_open = fopen(file, "r");
+
+    if (try_open == NULL) {
+        fprintf(stderr, "[csvee] ERROR: Could not open %s for parsing\n", file);
+        exit(EXIT_FAILURE);
+    }
 
     CSVParser *new_parser = malloc(sizeof(CSVParser));
-    new_parser->csv_file = fopen(file, "r");
+    new_parser->csv_file = try_open;
     new_parser->fields_per_line = fields_per_line;
 
     new_parser->fields = malloc(sizeof(*new_parser->fields) * fields_per_line);
