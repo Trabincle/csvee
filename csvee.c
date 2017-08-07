@@ -35,30 +35,33 @@ char csv_parse(CSVParser *parser) {
     int c;
     // iterator for buffers
     int i = 0, j = 0;
-    // state var for double quotes
-    int in_quotes = 0;
+    // flag for comma-escaping backslash
+    int found_backslash = 0;
 
     while ((c = fgetc(parser->csv_file)) != '\n' && c != EOF) {
-        if (!in_quotes && c == '\"') {
-            in_quotes = !in_quotes;
+        // if backslash is seen in a field, it's not written to the buffer
+        // and the next character is treated as having no special function
+        if (c == '\\') {
+            found_backslash = 1;
         }
+        
+        else {
+            if (c == ',' && !found_backslash) {
+                // close current field and move to next
+                parser->fields[i++][j] = '\0';
+                // reset field itr
+                j = 0;
+            }
 
-        else if (in_quotes && c == '\"') {
-            in_quotes = !in_quotes;
-        }
-
-        if (!in_quotes && c == ',') {
-            // close field
-            parser->fields[i++][j] = '\0';
-            // reset field itr
-            j = 0;
-        }
-
-        else if (c != '\"') {
-            parser->fields[i][j++] = c;
+            else {
+                parser->fields[i][j++] = c;
+                // reset flag after finding a backslash
+                found_backslash = 0;
+            }
         }
     }
 
+    // close last field
     parser->fields[i][j] = '\0';
 
     if (c == EOF) {
