@@ -44,7 +44,7 @@ char csv_parse(CSVParser *parser) {
     // flag for comma-escaping backslash
     int found_backslash = 0;
 
-    while ((c = fgetc(parser->csv_file)) != '\n' && c != EOF) {
+    while ((c = fgetc(parser->csv_file)) != EOF) {
         // if backslash is seen in a field, it's not written to the buffer
         // and the next character is treated as having no special function
         if (c == '\\') {
@@ -52,23 +52,29 @@ char csv_parse(CSVParser *parser) {
         }
         
         else {
-            if (c == ',' && !found_backslash) {
-                // close current field and move to next
-                parser->fields[i++][j] = '\0';
-                // reset field itr
-                j = 0;
+            if (found_backslash) {
+                parser->fields[i][j++] = c;
+                found_backslash = 0;
             }
 
             else {
-                parser->fields[i][j++] = c;
-                // reset flag after finding a backslash
-                found_backslash = 0;
+                // next field
+                if (c == ',' || c == '\n') {
+                    parser->fields[i++][j] = '\0';
+                    j = 0;
+                
+                    // unescaped new line = end of csv line
+                    if (c == '\n') {
+                        break;
+                    }
+                }
+
+                else {
+                    parser->fields[i][j++] = c;
+                }
             }
         }
     }
-
-    // close last field
-    parser->fields[i][j] = '\0';
 
     if (c == EOF) {
         fclose(parser->csv_file);
