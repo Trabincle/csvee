@@ -18,7 +18,7 @@ CSVParser * csv_new(char *file, int fields_per_line);
 void csv_free(CSVParser *parser);
 
 // updates the fields member of struct CSVParser, overwriting the previous
-// fields with the fields in the following line (parses the next line)
+// fields with the fields in the following line (each call parses the next line)
 char csv_parse(CSVParser *parser);
 
 // returns pointer to field of index <field> in last parsed line of parser <parser>
