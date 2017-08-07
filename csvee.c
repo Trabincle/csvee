@@ -45,14 +45,14 @@ char csv_parse(CSVParser *parser) {
     int found_backslash = 0;
 
     while ((c = fgetc(parser->csv_file)) != EOF) {
-        // if backslash is seen in a field, it's not written to the buffer
-        // and the next character is treated as having no special function
-        if (c == '\\') {
+        // `!found_backslash` allows for literal backslashes
+        if (c == '\\' && !found_backslash) {
             found_backslash = 1;
         }
         
         else {
             if (found_backslash) {
+                // insert character literally
                 parser->fields[i][j++] = c;
                 found_backslash = 0;
             }
@@ -63,7 +63,7 @@ char csv_parse(CSVParser *parser) {
                     parser->fields[i++][j] = '\0';
                     j = 0;
                 
-                    // unescaped new line = end of csv line
+                    // unescaped newline char = end of csv line
                     if (c == '\n') {
                         break;
                     }
