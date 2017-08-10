@@ -9,10 +9,11 @@ typedef struct s_csvparser {
     FILE *csv_file;
     char **fields;
     int fields_per_line;
+    char delimiter;
 } CSVParser;
 
 // allocates memory for a new CSVParser struct used by the other functions
-CSVParser * csv_new(char *file, int fields_per_line);
+CSVParser * csv_new(char *file, int fields_per_line, char delimiter);
 
 // [not for client use] frees memory allocated by csv_new
 void csv_free(CSVParser *parser);

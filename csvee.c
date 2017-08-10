@@ -5,7 +5,7 @@
 
 #define FIELD_BUF_SIZE 300
 
-CSVParser * csv_new(char *file, int fields_per_line) {
+CSVParser * csv_new(char *file, int fields_per_line, char delimiter) {
     int i;
     FILE *try_open = fopen(file, "r");
 
@@ -17,6 +17,7 @@ CSVParser * csv_new(char *file, int fields_per_line) {
     CSVParser *new_parser = malloc(sizeof(CSVParser));
     new_parser->csv_file = try_open;
     new_parser->fields_per_line = fields_per_line;
+    new_parser->delimiter = delimiter;
 
     new_parser->fields = malloc(sizeof(*new_parser->fields) * fields_per_line);
     for (i = 0; i < fields_per_line; i++) {
@@ -43,6 +44,8 @@ char csv_parse(CSVParser *parser) {
     int i = 0, j = 0;
     // flag for comma-escaping backslash
     int found_backslash = 0;
+    // delimiter character
+    char delim = parser->delimiter;
 
     while ((c = fgetc(parser->csv_file)) != EOF) {
         // `!found_backslash` allows for literal backslashes
@@ -59,7 +62,7 @@ char csv_parse(CSVParser *parser) {
 
             else {
                 // next field
-                if (c == ',' || c == '\n') {
+                if (c == delim || c == '\n') {
                     parser->fields[i++][j] = '\0';
                     j = 0;
                 
