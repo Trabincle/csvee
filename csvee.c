@@ -3,25 +3,23 @@
 
 #include "csvee.h"
 
-#define FIELD_BUF_SIZE 300
-
-CSVParser * csv_new(char *file, int fields_per_line, char delimiter) {
+CSVParser * csv_new(char *file, int max_fields_per_line, size_t max_field_size, char delimiter) {
     int i;
-    FILE *try_open = fopen(file, "r");
+    FILE *try_open_file = fopen(file, "r");
 
-    if (try_open == NULL) {
+    if (try_open_file == NULL) {
         fprintf(stderr, "[csvee] ERROR: Could not open %s for parsing\n", file);
         exit(EXIT_FAILURE);
     }
 
     CSVParser *new_parser = malloc(sizeof(CSVParser));
-    new_parser->csv_file = try_open;
-    new_parser->fields_per_line = fields_per_line;
+    new_parser->csv_file = try_open_file;
+    new_parser->max_fields_per_line = max_fields_per_line;
     new_parser->delimiter = delimiter;
 
-    new_parser->fields = malloc(sizeof(*new_parser->fields) * fields_per_line);
-    for (i = 0; i < fields_per_line; i++) {
-        new_parser->fields[i] = malloc(sizeof(**new_parser->fields) * FIELD_BUF_SIZE + 1);
+    new_parser->fields = malloc(sizeof(*new_parser->fields) * max_fields_per_line);
+    for (i = 0; i < max_fields_per_line; i++) {
+        new_parser->fields[i] = malloc(sizeof(**new_parser->fields) * max_field_size + 1);
     }
 
     return new_parser;
@@ -30,7 +28,7 @@ CSVParser * csv_new(char *file, int fields_per_line, char delimiter) {
 void csv_free(CSVParser *parser) {
     int i;
 
-    for (i = 0; i < parser->fields_per_line; i++) {
+    for (i = 0; i < parser->max_fields_per_line; i++) {
         free(parser->fields[i]);
     }
     free(parser->fields);
