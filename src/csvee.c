@@ -28,6 +28,8 @@ CSVParser * csv_new(char *file, int max_fields_per_line, size_t max_field_size, 
 void csv_free(CSVParser *parser) {
     int i;
 
+    fclose(parser->csv_file);
+
     for (i = 0; i < parser->max_fields_per_line; i++) {
         free(parser->fields[i]);
     }
@@ -78,7 +80,6 @@ char csv_parse(CSVParser *parser) {
     }
 
     if (c == EOF) {
-        fclose(parser->csv_file);
         csv_free(parser);
     }
 

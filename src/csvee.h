@@ -1,6 +1,6 @@
-// ----------------------------------
-// = csvee - simple csv file parser =
-// ----------------------------------
+// ----------------------------------------
+// = csvee - simple csv-style file parser =
+// ----------------------------------------
 #pragma once
 
 #include <stdio.h>
@@ -19,7 +19,8 @@ typedef struct s_csvparser {
 // 'delimiter' = character to be used as field separator
 CSVParser * csv_new(char *file, int max_fields_per_line, size_t max_field_size, char delimiter);
 
-// [not for client use] frees memory allocated by csv_new
+// calls fclose on file and frees memory allocated by csv_new
+// note: memory used by parser object is automatically freed when EOF is found during call to csv_parse
 void csv_free(CSVParser *parser);
 
 // updates the 'fields' member of 'parser', overwriting the previous
