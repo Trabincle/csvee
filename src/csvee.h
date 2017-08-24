@@ -13,6 +13,7 @@ typedef struct s_csvparser {
 } CSVParser;
 
 // allocates memory for a new CSVParser struct used by the other functions
+// returns NULL if file couldn't be opened
 // 'file' = file to be parsed
 // 'max_fields_per_line' = max amount of buffers for fields in a line
 // 'max_field_size' = size of buffers
