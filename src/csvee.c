@@ -87,6 +87,6 @@ char csv_parse(CSVParser *parser) {
 }
 
 char * csv_get_field(CSVParser *parser, int field) {
-    return parser->fields[field];
+    return parser->fields[field - 1];
 }
 

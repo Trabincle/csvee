@@ -28,6 +28,6 @@ void csv_free(CSVParser *parser);
 char csv_parse(CSVParser *parser);
 
 // returns pointer to field of index 'field' in last parsed line of parser 'parser'
-// 0 < 'field' < 'max_fields_per_line' - 1
+// the first field of a record is field 1
 char * csv_get_field(CSVParser *parser, int field);
 
