@@ -1,7 +1,8 @@
+#include "csvee.h"
+
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "csvee.h"
 
 CSVParser * csv_new(char *file, int max_fields_per_line, size_t max_field_size, char delimiter) {
     int i;
