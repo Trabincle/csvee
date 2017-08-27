@@ -18,7 +18,7 @@ typedef struct s_csvparser {
 // 'max_fields_per_line' = max amount of buffers for fields in a line
 // 'max_field_size' = size of buffers
 // 'delimiter' = character to be used as field separator
-CSVParser * csv_new(char *file, int max_fields_per_line, size_t max_field_size, char delimiter);
+CSVParser * csv_new(const char *file, const int max_fields_per_line, const size_t max_field_size, const char delimiter);
 
 // calls fclose on file and frees memory allocated by csv_new
 // note: memory used by parser object is automatically freed when EOF is found during call to csv_parse

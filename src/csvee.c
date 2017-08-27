@@ -4,7 +4,7 @@
 #include <stdlib.h>
 
 
-CSVParser * csv_new(char *file, int max_fields_per_line, size_t max_field_size, char delimiter) {
+CSVParser * csv_new(const char *file, const int max_fields_per_line, const size_t max_field_size, const char delimiter) {
     int i;
     FILE *try_open_file = fopen(file, "r");
 
