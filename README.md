@@ -1,6 +1,6 @@
 csvee
 =====
-Sequential CSV-style file parser for the **C** language.
+Sequential CSV-style file parser, written in C.
 
 Example usage
 -------------
@@ -20,8 +20,8 @@ int main(void) {
     CSVParser *parser = csv_new("file.csv", 2, 100, ',');
 
     while (csv_parse(parser) != EOF) {
-        printf("Field 1: %s\n", csv_get_field(parser, 0));
-        printf("Field 2: %s\n", csv_get_field(parser, 1));
+        printf("Field 1: %s\n", csv_get_field(parser, 1));
+        printf("Field 2: %s\n", csv_get_field(parser, 2));
         putc('\n');
     }
 }
